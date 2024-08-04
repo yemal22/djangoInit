@@ -2,8 +2,19 @@
 
 {% block content %}
 
-<h1>Room page</h1>
+<h1>{{room.name}}</h1>
 
-<h2>{{room.id}}--{{room.name}}</h2>
+<p>{{room.description}}</p>
+
+<div class="comment-wrapper">
+    <h3>Conversation</h3>
+    <hr>
+
+    {% for message in messages %}
+        <div>
+            <small></small>
+        </div>
+    {% endfor %}
+</div>
 
 {% endblock %}
