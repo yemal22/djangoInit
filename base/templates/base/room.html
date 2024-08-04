@@ -10,11 +10,23 @@
     <h3>Conversation</h3>
     <hr>
 
-    {% for message in messages %}
+    {% for message in room_messages %}
         <div>
-            <small></small>
+            <small>@{{message.user}} {{message.created|timesince}} ago </small>
+            <p>{{message.body}}</p>
+            <hr>
         </div>
     {% endfor %}
 </div>
+
+{% if request.user.is_authenticated %}
+<div class="comment-form">
+    <h3>Leave a message</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="body" placeholder="Your message...">
+    </form>
+</div>
+{% endif %}
 
 {% endblock %}

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.db.models import Q
-from .models import Room, Topic, User
+from .models import Room, Topic, User, Message
 from django.contrib.auth import authenticate, login, logout
 from .forms import RoomForm
 
@@ -75,10 +75,19 @@ def home(request):
 
 def room(request, pk):
     room = Room.objects.get(id=int(pk))
-    messages = room.message_set.all()
+    room_messages = room.message_set.all()
+
+    if request.method == 'POST':
+        message = Message.objects.create(
+            user=request.user,
+            room=room,
+            body=request.POST.get('body')
+        )
+        return redirect(request.META.get('HTTP_REFERER'))
+
     context = {
         'room': room,
-        'messages': messages
+        'room_messages': room_messages
     }
     return render(request, 'base/room.html', context)
 
